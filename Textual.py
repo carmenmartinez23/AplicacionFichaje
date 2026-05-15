@@ -200,8 +200,10 @@ class AgendaApp(App):
         # Encabezado de la app
         yield Header()
 
-        # Selector de campo de búsqueda
-        with Horizontal(id="contenedor-busqueda"):
+        with Vertical(id="zona-busqueda"):
+            yield Static("Buscar por filtro:", id="etiqueta-buscar")
+            # Selector de campo de búsqueda
+            with Horizontal(id="contenedor-busqueda"):
                 self.campo_filtro = Select(
                     [
                         ("Todos los campos", "todos"),
