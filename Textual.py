@@ -201,24 +201,25 @@ class AgendaApp(App):
         yield Header()
 
         # Selector de campo de búsqueda
-        self.campo_filtro = Select(
-            [
-                ("Todos los campos", "todos"),
-                ("Nombre", "nombre"),
-                ("Apellidos", "apellidos"),
-                ("Teléfono", "telefono"),
-                ("Email", "email"),
-                ("Cumpleaños", "cumpleaños"),
-                ("Tipo", "tipo")
-            ],
-            value="todos",
-            id="campo_filtro",
-        )
-        yield self.campo_filtro
+        with Horizontal(id="contenedor-busqueda"):
+                self.campo_filtro = Select(
+                    [
+                        ("Todos los campos", "todos"),
+                        ("Nombre", "nombre"),
+                        ("Apellidos", "apellidos"),
+                        ("Teléfono", "telefono"),
+                        ("Email", "email"),
+                        ("Cumpleaños", "cumpleaños"),
+                        ("Tipo", "tipo")
+                    ],
+                    value="todos",
+                    id="campo_filtro",
+                )
+                yield self.campo_filtro
 
-        # Caja de búsqueda
-        self.busqueda = Input(placeholder="Buscar cliente...")
-        yield self.busqueda
+                # Caja de búsqueda
+                self.busqueda = Input(placeholder="Buscar cliente...")
+                yield self.busqueda        # Caja de búsqueda
 
         # Tabla donde se muestran los clientes
         self.tabla = DataTable()
@@ -401,16 +402,6 @@ class AgendaApp(App):
         exportar_pdf(self.clientes_visibles)
         self.notify("PDF exportado correctamente")
 
-    # # ATAJO GUARDAR
-    # def action_guardar(self):
-    #     guardado = Guardar(
-    #         app=self.app,
-    #         formulario=self,
-    #         cliente=self.cliente,
-    #         contador_id=contador_id
-    #     )
-    #     guardado.ejecutar()
-
     # ATAJO CANCELAR
     def action_cancelar(self):
         self.app.pop_screen()
@@ -591,11 +582,12 @@ class Confirmar(Screen):
 
             # Mensaje de confirmación
             yield Vertical(
-                Static(f"¿Eliminar a {nombre_completo}?"),
+                Static(f"¿Eliminar a {nombre_completo}?", id="texto-confirmacion"),
                 Horizontal(
                     Button("Sí, eliminar", id="confirmar"),
                     Button("Cancelar", id="cancelar")
-                )
+                ),
+                id="cuadro-confirmacion"
             )
 
         def on_button_pressed(self, event):
